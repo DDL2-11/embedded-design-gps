@@ -29,5 +29,7 @@ $GPRMC, 191934.767, A, 4738.0173, N, 12211.1874, W, 0.109623, 12.14, 291004, , *
 ![struct](struct.png)
  
 获取的经纬度信息，本来应该通过wifi模块传到电脑上的，但是没有esp8266的websocket的开发环境，暂时无法让它支持websocket，但是实现了的话，可以在电脑端用websocket接收经纬度的数据信息。代码如下：
+![websocket](websocket.png)
  
 最后的效果图如下：
+![result](result.png)
