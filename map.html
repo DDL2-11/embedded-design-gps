@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<style type="text/css">
+			body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+			#l-map{height:100%;width:78%;float:left;border-right:2px solid #bcbcbc;}
+			#r-result{height:100%;width:20%;float:left;}
+		</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=amy5lBMjH4C0AM6WtKAeEEXU"></script>
+	<title>添加多个标注点</title>
+	</head>
+	<body>
+		<div id="allmap"></div>
+	</body>
+</html>
+
+
+<script type="text/javascript">
+//websocket部份
+//需要esp8266安裝MicroPython才能設置成Websocket服務器
+function WebSocketTest(lngs, lats)
+{
+	if ("WebSocket" in window)
+	{
+		alert("ok");
+		var ws = new WebSocket("ws://192.168.4.1:8080");
+		ws.onopen = function()
+		{
+			alert("opened");
+		};
+		ws.onmessage = function(msg)
+		{
+			//alert(msg.data);
+			var strs = new Array();
+			strs = msg.split(",");
+			lngs = strs[0];
+			lats = strs[1];
+		};
+		ws.onclose = function()
+		{
+			alert("closed");
+		};
+		ws.onerror = function()
+		{
+			alert("error");
+		};
+	}
+	else
+	{
+		alert("disconnect");
+	}
+}
+
+//繪型地圖部份
+var lngs=113.391520; //经度 後者是人為計算的偏差
+var lats=23.060091;   //纬度
+var newLngs = lngs+0.006515;
+var newLats = lats+0.006268;
+var arrnames="中大";
+var strname="";
+// 百度地图API功能
+var map = new BMap.Map("allmap");
+var point = new BMap.Point(newLngs, newLats);
+map.centerAndZoom(point, 15);
+map.addControl(new BMap.MapTypeControl());
+map.setCurrentCity("广州");
+var marker = new BMap.Marker(point);
+map.addOverlay(marker);
+map.panTo(point);
+
+map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
+map.addControl(new BMap.OverviewMapControl());              //添加缩略地图控件
+map.enableScrollWheelZoom();                            //启用滚轮放大缩小
+map.addControl(new BMap.MapTypeControl());          //添加地图类型控件
+
+</script>
